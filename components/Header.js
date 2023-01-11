@@ -1,6 +1,13 @@
 import React from 'react'
 import Image from "next/image";
-import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassCircleIcon, 
+         HomeIcon,
+         Bars3Icon,
+         PaperAirplaneIcon,
+         PlusCircleIcon,
+         HeartIcon,
+         UserGroupIcon,
+        } from '@heroicons/react/24/outline'
 
 // import {
 //     SearchIcon,
@@ -8,7 +15,7 @@ import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline'
 //     UserGroupIcon,
 //     HeartIcon,
 //     PaperAirplaneIcon,
-//     MenuIcon,
+//     Bars2Icon,
 // } from "@heroicons/react/outline";
 
 function Header() {
@@ -59,7 +66,29 @@ function Header() {
           </div>
         </div>
 
+        {/* Rigth */}
+
+        <div className='flex items-center justify-end space-x-4'>
+            < HomeIcon  className='navBtn' />
+            < Bars3Icon  className='h-6 md:hidden cursor-pointer' />
+            <div className='relative navBtn'>
+                < PaperAirplaneIcon className='navBtn rotate-[315deg]'/>
+                <div className='absolute -top-1 -right-3 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>3</div>
+            </div>
+            < PlusCircleIcon className='navBtn' />
+            < UserGroupIcon className='navBtn' />
+            < HeartIcon className='navBtn' />
+            < img 
+                src ='https://ta.azureedge.net/p/images/usuarios/l/FfQbeg5V2Ej3XUnxffkrT7rJPa9ZHbjq0.jpg/300x300cut/' 
+                alt='profilePicture'  
+                className='h-10 rounded-full cursor-pointer'
+                />
+
+
+
         </div>
+
+            </div>
         </div>
     )
 }
