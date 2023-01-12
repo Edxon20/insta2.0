@@ -9,15 +9,6 @@ import { MagnifyingGlassCircleIcon,
          UserGroupIcon,
         } from '@heroicons/react/24/outline'
 
-// import {
-//     SearchIcon,
-//     PlusCircleIcon,
-//     UserGroupIcon,
-//     HeartIcon,
-//     PaperAirplaneIcon,
-//     Bars2Icon,
-// } from "@heroicons/react/outline";
-
 function Header() {
     return (
         <div
