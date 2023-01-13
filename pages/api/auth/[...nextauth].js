@@ -9,5 +9,11 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
+
+  theme:{
+    logo:'https://links.papareact.com/sq0',
+    brandColor: '#F13287',
+    colorScheme: 'auto',
+  }
 }
 export default NextAuth(authOptions)
