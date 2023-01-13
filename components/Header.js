@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSession } from 'next-auth/react'
 import Image from "next/image";
 import { MagnifyingGlassCircleIcon, 
          HomeIcon,
@@ -9,7 +10,11 @@ import { MagnifyingGlassCircleIcon,
          UserGroupIcon,
         } from '@heroicons/react/24/outline'
 
+
 function Header() {
+
+  const session = useSession();
+
     return (
         <div
       className='shadow-sm border-b bg-white sticky top-0 z-50'
