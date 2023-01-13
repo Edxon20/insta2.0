@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import Image from "next/image";
 import { MagnifyingGlassCircleIcon, 
          HomeIcon,
@@ -13,8 +13,8 @@ import { MagnifyingGlassCircleIcon,
 
 function Header() {
 
-  const session = useSession();
-
+  const {data: session} = useSession();
+  console.log(session?.user?.image)
     return (
         <div
       className='shadow-sm border-b bg-white sticky top-0 z-50'
@@ -64,22 +64,28 @@ function Header() {
 
         {/* Rigth */}
 
-        <div className='flex items-center justify-end space-x-4'>
-            < HomeIcon  className='navBtn' />
-            < Bars3Icon  className='h-6 md:hidden cursor-pointer' />
-            <div className='relative navBtn'>
-                < PaperAirplaneIcon className='navBtn rotate-[315deg]'/>
-                <div className='absolute -top-1 -right-3 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>3</div>
-            </div>
-            < PlusCircleIcon className='navBtn' />
-            < UserGroupIcon className='navBtn' />
-            < HeartIcon className='navBtn' />
-            < img 
-                src ='https://ta.azureedge.net/p/images/usuarios/l/FfQbeg5V2Ej3XUnxffkrT7rJPa9ZHbjq0.jpg/300x300cut/' 
-                alt='profilePicture'  
-                className='h-10 rounded-full cursor-pointer'
-                />
-
+          <div className='flex items-center justify-end space-x-4'>
+            < HomeIcon className='navBtn' />
+            < Bars3Icon className='h-6 md:hidden cursor-pointer' />
+            {session ? (
+              <>
+              < div className='relative navBtn'>
+            < PaperAirplaneIcon className='navBtn rotate-[315deg]' />
+            <div className='absolute -top-1 -right-3 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>3</div>
+          </div>
+          < PlusCircleIcon className='navBtn' />
+          < UserGroupIcon className='navBtn' />
+          < HeartIcon className='navBtn' />
+          < img
+            onClick={signOut}
+            src={session?.user?.image}
+            alt='profilePicture'
+            className='h-10 rounded-full cursor-pointer'
+          />
+          </>
+           ) :(
+            <button onClick={signIn}> Sign In</button>
+           )}
 
 
         </div>
