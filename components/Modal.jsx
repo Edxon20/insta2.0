@@ -14,6 +14,8 @@ function Modal() {
     //Here you store the picture. 
     const [selectedFile, setSelectedFile] = useState(null)
 
+    const captionRef = useRef(null);
+
     const addImageToPost = (e) => {
       const reader = new FileReader();
         if(e.target.files[0]){
@@ -26,7 +28,9 @@ function Modal() {
     };
 
     return (
+        
         <Transition.Root show={open} as={Fragment}>
+            
             <Dialog
                 as='div'
                 className='fixed z-10 inset-0 overflow-y-auto'
@@ -71,7 +75,10 @@ function Modal() {
                 overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6'>
                             <div>
                                 {selectedFile ? (
-                                    <img src={selectedFile} alt="selectedFile" />
+                                    <img 
+                                        className='w-full object-contain cursor-pointer'
+                                        src={selectedFile} 
+                                         onClick={() =>setSelectedFile(null)} alt="selectedFile" />
                                 ): (
                                        
                                 <div
@@ -112,7 +119,7 @@ function Modal() {
                                                 <input
                                                     className='border-none focus:ring-0 w-full text-center'
                                                     type='text'
-                                                    //ref={captionRef}
+                                                    ref={captionRef}
                                                     placeholder='Please enter a caption'
                                                 />
                                             </div>
