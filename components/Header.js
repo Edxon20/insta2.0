@@ -1,6 +1,9 @@
-import React from 'react'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import React from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
 import Image from "next/image";
+
 import { MagnifyingGlassCircleIcon, 
          HomeIcon,
          Bars3Icon,
@@ -10,12 +13,15 @@ import { MagnifyingGlassCircleIcon,
          UserGroupIcon,
         } from '@heroicons/react/24/outline'
 
+import modalState from '../atoms/modalAtoms'
 
-function Header() {
+function Header() {  
 
   const {data: session} = useSession();
-  console.log(session?.user?.image)
-    return (
+  const [open, setOpen] = useRecoilState(modalState);
+  const router = useRouter();
+
+  return (
         <div
       className='shadow-sm border-b bg-white sticky top-0 z-50'
     >
@@ -25,6 +31,7 @@ function Header() {
         {/* Left */}
         <div
           className='relative hidden lg:inline-grid w-24 cursor-pointer'
+          onClick={() =>router.push('/')}
         >
           <Image 
             src='https://links.papareact.com/ocw'            
@@ -38,6 +45,7 @@ function Header() {
 
         <div          
           className='relative w-10 lg:hidden flex-shrink-0 cursor-pointer'
+          onClick={() => router.push('/')}
         >
           <Image 
             src='https://links.papareact.com/jjm'            
@@ -65,7 +73,7 @@ function Header() {
         {/* Rigth */}
 
           <div className='flex items-center justify-end space-x-4'>
-            < HomeIcon className='navBtn' />
+            < HomeIcon className='navBtn' onClick={() => router.push('/')} />
             < Bars3Icon className='h-6 md:hidden cursor-pointer' />
             {session ? (
               <>
@@ -73,7 +81,7 @@ function Header() {
             < PaperAirplaneIcon className='navBtn rotate-[315deg]' />
             <div className='absolute -top-1 -right-3 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>3</div>
           </div>
-          < PlusCircleIcon className='navBtn' />
+          < PlusCircleIcon onClick={ () => setOpen(true) } className='navBtn' />
           < UserGroupIcon className='navBtn' />
           < HeartIcon className='navBtn' />
           < img
