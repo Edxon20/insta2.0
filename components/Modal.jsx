@@ -14,7 +14,16 @@ function Modal() {
     //Here you store the picture. 
     const [selectedFile, setSelectedFile] = useState(null)
 
+    const [loading,setLoading] = useState(false);
+
+
     const captionRef = useRef(null);
+
+    const uploadPost = async () => {
+        if(loading) return;
+
+        setLoading(true);
+    }
 
     const addImageToPost = (e) => {
       const reader = new FileReader();
