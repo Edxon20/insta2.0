@@ -3,10 +3,15 @@ import { useRecoilState } from 'recoil';
 import modalState from '../atoms/modalAtoms';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-
+import { db, storage } from '../firebase'
+ 
 import { CameraIcon   } from '@heroicons/react/24/outline'
+import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
+import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 
 function Modal() {
+
 
     const [open, setOpen] = useRecoilState(modalState)
     // To find into the files on own computer or mobile. 
@@ -16,6 +21,8 @@ function Modal() {
 
     const [loading,setLoading] = useState(false);
 
+    const {data: session} = useSession();
+
 
     const captionRef = useRef(null);
 
@@ -23,6 +30,43 @@ function Modal() {
         if(loading) return;
 
         setLoading(true);
+
+        // 1) Create a post and add to firestone 'posts' collection
+        // 2) Get the post ID for the newly created post
+        // 3) Upload the image to firebase storage with the post ID
+        // 4) Get a download URL from firebase storage and update the to original post  wt image
+
+        // VERSION 9 FIREBASE
+                        //await while connect with firebase
+                        //addDoc is a funcion from firebase
+        const docRef = await addDoc(collection(db, 'posts'), {
+
+            username: session.user.username,
+            caption: captionRef.current.value,
+            profileImg: session.user.image,
+            timestamp: serverTimestamp()
+        }) 
+
+        //2
+        console.log('New doc added with ID', docRef.id);
+
+        //3
+
+        const imageRef = ref(storage, `posts/$(docRef.id)/image` );
+
+        await uploadString(imageRef, selectedFile, 'data_url').then(async snapshot => {
+            const downloadURL = await getDownloadURL(imageRef);
+            // 4
+            await updateDoc(doc(db,'posts', docRef.id, {
+                image: downloadURL
+            }))
+        });
+
+        setOpen(false);
+        setLoading(false);
+        setSelectedFile(null);
+
+
     }
 
     const addImageToPost = (e) => {
@@ -140,7 +184,8 @@ function Modal() {
                                 >
                                     <button
                                         type='button'
-                                        //disabled={!selectedFile}
+                                        // disable is connect with Taiwind
+                                        disabled={!selectedFile}
                                         className='inline-flex justify-center w-full 
                                         rounded-md border border-transparent shadow-sm
                                          px-4 py-2 bg-red-600 text-base font-medium
@@ -148,7 +193,7 @@ function Modal() {
                                           focus:ring-2 focus:ring-offset-2 focus:ring-red-500 
                                           sm:text-sm disabled:bg-gray-300 disabled:cursor-not-allowed
                                            hover:disabled:bg-gray-300'
-                                    //onClick={uploadPost}
+                                    onClick={uploadPost}
                                     >
                                         Upload Post
                                     </button>
