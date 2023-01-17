@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import {
     BookmarkIcon,
     ChatBubbleBottomCenterIcon,
@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react'
 import { db } from '../firebase';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
 
 
 function Post({id,username,userImg,image,caption}) {
@@ -17,6 +17,16 @@ function Post({id,username,userImg,image,caption}) {
     const {data: session} = useSession();
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
+    
+    useEffect(() =>
+        onSnapshot(
+            query(
+                collection(db, 'posts', id, 'comments'),
+                orderBy('timestamp', 'desc')
+            ),
+            snapshot => setComments(snapshot.docs)
+        ),
+        [db, id]);
     
     const sendComment = async (e) =>{
         e.preventDefault();
@@ -67,6 +77,18 @@ function Post({id,username,userImg,image,caption}) {
         </p >
 
         {/* comments */}
+        {comments.length >0 && (
+            <div className='ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin'>
+                {comments.map (comment => (
+
+                    <div key={comment.id} className='flex items-center space-x-2 mb-3'>
+                        <img className='h-7 rounded-full' src={comment.data().image}  alt=''/>                        
+                    </div>
+
+                ))}
+                <h1>Hello</h1>
+            </div>
+        )}
 
             {/* input box */}
 
