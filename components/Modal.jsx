@@ -1,4 +1,6 @@
+//Obtienen un estado. 
 import React, { useRef, useState } from 'react';
+
 import { useRecoilState } from 'recoil';
 import modalState from '../atoms/modalAtoms';
 import { Dialog, Transition } from '@headlessui/react';
@@ -6,12 +8,11 @@ import { Fragment } from 'react';
 import { db, storage } from '../firebase'
  
 import { CameraIcon   } from '@heroicons/react/24/outline'
-import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 
 function Modal() {
-
 
     const [open, setOpen] = useRecoilState(modalState)
     // To find into the files on own computer or mobile. 
@@ -37,47 +38,42 @@ function Modal() {
         // 4) Get a download URL from firebase storage and update the to original post  wt image
 
         // VERSION 9 FIREBASE
-                        //await while connect with firebase
-                        //addDoc is a funcion from firebase
+        //await while connect with firebase
+        //addDoc is a funcion from firebase
         const docRef = await addDoc(collection(db, 'posts'), {
-
             username: session.user.username,
             caption: captionRef.current.value,
             profileImg: session.user.image,
             timestamp: serverTimestamp()
-        }) 
+        })
 
-        //2
-        console.log('New doc added with ID', docRef.id);
+        console.log("New doc added with ID: ", docRef.id);
 
-        //3
-
-        const imageRef = ref(storage, `posts/$(docRef.id)/image` );
+        const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
         await uploadString(imageRef, selectedFile, 'data_url').then(async snapshot => {
             const downloadURL = await getDownloadURL(imageRef);
-            // 4
-            await updateDoc(doc(db,'posts', docRef.id, {
+            await updateDoc(doc(db, 'posts', docRef.id), {
                 image: downloadURL
-            }))
+            });
         });
 
         setOpen(false);
         setLoading(false);
         setSelectedFile(null);
-
-
     }
 
-    const addImageToPost = (e) => {
-      const reader = new FileReader();
-        if(e.target.files[0]){
+    const addImageToPost = e => {
+        const reader = new FileReader();
+
+        if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0]);
-        }  
+        }
 
         reader.onload = (readerEvent) => {
             setSelectedFile(readerEvent.target.result);
-        };
+        }
+        setLoading(false);
     };
 
     return (
@@ -195,7 +191,7 @@ function Modal() {
                                            hover:disabled:bg-gray-300'
                                     onClick={uploadPost}
                                     >
-                                        Upload Post
+                                        {loading ? 'Uploading' : 'Upload Post' }
                                     </button>
                                 </div>
 

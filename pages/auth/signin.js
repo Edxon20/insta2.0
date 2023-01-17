@@ -22,9 +22,7 @@ function signin({providers}) {
             </div>       
         ))}
         </div>
-      </div>
-      
-      
+      </div>   
     </>
   )
 }

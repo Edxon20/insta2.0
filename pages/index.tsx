@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Feed from '../components/Feed'
 import Modal from '../components/Modal'
+import Example from '../components/Example'
 
 
 const Home: NextPage = () => {
@@ -13,10 +14,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
+      <Example />
       <Header />
       <Feed />
       <Modal />
+      
     </div>
   )
 }
