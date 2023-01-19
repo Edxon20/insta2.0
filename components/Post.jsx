@@ -9,7 +9,8 @@ import {
 } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react'
 import { db } from '../firebase';
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore';
+import Moment from 'react-moment';
 
 
 function Post({id,username,userImg,image,caption}) {
@@ -17,6 +18,9 @@ function Post({id,username,userImg,image,caption}) {
     const {data: session} = useSession();
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
+    const [likes, setLikes] = useState([]);
+    const [hasLiked, setHasLiked] = useState(false);
+
     
     useEffect(() =>
         onSnapshot(
@@ -40,7 +44,38 @@ function Post({id,username,userImg,image,caption}) {
             timestamp: serverTimestamp(),
         })
 
+        //UseEffecto from LIKES
+        useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
+
+            setLikes(snapshot.docs)
+
+        ),
+            [db,id]
+        );
+        
     }
+
+    useEffect(() =>
+    setHasLiked(
+      likes.findIndex(like => like.id === session?.user?.userid) !== -1
+    ),
+  [likes]);
+
+    
+    const likePost = async () => {
+
+        if(hasLiked){
+            await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+        } else{
+            await setDoc(doc(db, 'posts', id, 'likes', session.user.uid),{
+                username: session.user.username,
+         });
+        }
+
+       };
+
+       console.log(hasLiked)
+       
 
     return (
     <div className='bg-white my-7 border rounded-sm'>      
@@ -60,7 +95,9 @@ function Post({id,username,userImg,image,caption}) {
         {session && (
             <div className='flex justify-between px-4 pt-4'>
             <div className='flex space-x-4 '>
-                  <HeartIcon className='btn' />
+                  <HeartIcon 
+                  onClick={likePost}
+                  className='btn' />
                   <ChatBubbleBottomCenterIcon className='btn' />
                   <PaperAirplaneIcon className='btn' />
             </div>
@@ -84,8 +121,13 @@ function Post({id,username,userImg,image,caption}) {
                     <div key={comment.id} className='flex items-center space-x-2 mb-3'>
                         <img className='h-7 rounded-full' src={comment.data().userImg}  alt=''/>                        
                         <p className='text-sm flex-1'>
-                            <span className='font-bold'>{comment.data().username}</span>  {comment.data().comment}
+                            <span className='font-bold'>{comment.data().username}</span>  
+                            {comment.data().comment}
                         </p>
+
+                        <Moment className='pr-5 text-xs' fromNow >
+                            {comment.data().timestamp?.toDate()}
+                        </Moment>
                     </div>                    
                 ))}                
             </div>
