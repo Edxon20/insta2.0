@@ -82,11 +82,12 @@ function Post({id,username,userImg,image,caption}) {
                 {comments.map (comment => (
 
                     <div key={comment.id} className='flex items-center space-x-2 mb-3'>
-                        <img className='h-7 rounded-full' src={comment.data().image}  alt=''/>                        
-                    </div>
-
-                ))}
-                <h1>Hello</h1>
+                        <img className='h-7 rounded-full' src={comment.data().userImg}  alt=''/>                        
+                        <p className='text-sm flex-1'>
+                            <span className='font-bold'>{comment.data().username}</span>  {comment.data().comment}
+                        </p>
+                    </div>                    
+                ))}                
             </div>
         )}
 
