@@ -5,7 +5,8 @@ import {
     EllipsisHorizontalIcon,
     FaceSmileIcon,
     HeartIcon,
-    PaperAirplaneIcon
+    PaperAirplaneIcon,
+    HeartIconFilled
 } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react'
 import { db } from '../firebase';
@@ -45,13 +46,12 @@ function Post({id,username,userImg,image,caption}) {
         })
 
         //UseEffecto from LIKES
-        useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
-
-            setLikes(snapshot.docs)
-
-        ),
-            [db,id]
-        );
+        useEffect(() =>
+            onSnapshot(
+                collection(db, 'posts', id, 'likes'),
+                snapshot => setLikes(snapshot.docs)
+            ),
+            [db, id]);
         
     }
 
@@ -71,10 +71,11 @@ function Post({id,username,userImg,image,caption}) {
                 username: session.user.username,
          });
         }
-
        };
 
-       console.log(hasLiked)
+       
+
+       
        
 
     return (
@@ -95,9 +96,16 @@ function Post({id,username,userImg,image,caption}) {
         {session && (
             <div className='flex justify-between px-4 pt-4'>
             <div className='flex space-x-4 '>
-                  <HeartIcon 
-                  onClick={likePost}
-                  className='btn' />
+                {
+                    hasLiked ? (
+                        <PaperAirplaneIcon />
+                    ) : (
+                                    <HeartIcon
+                                        onClick={likePost}
+                                        className='btn' />
+                    )
+                }
+                  
                   <ChatBubbleBottomCenterIcon className='btn' />
                   <PaperAirplaneIcon className='btn' />
             </div>
