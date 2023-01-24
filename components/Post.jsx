@@ -43,17 +43,17 @@ function Post({id,username,userImg,image,caption}) {
             comment: commentToSend,
             username: session.user.username,
             timestamp: serverTimestamp(),
-        })
-
-        //UseEffecto from LIKES
-        useEffect(() =>
-            onSnapshot(
-                collection(db, 'posts', id, 'likes'),
-                snapshot => setLikes(snapshot.docs)
-            ),
-            [db, id]);
+        })      
         
     }
+
+     //UseEffecto from LIKES
+     useEffect(() =>
+     onSnapshot(
+         collection(db, 'posts', id, 'likes'),
+         snapshot => setLikes(snapshot.docs)
+     ),
+     [db, id]);
 
     useEffect(() =>
     setHasLiked(

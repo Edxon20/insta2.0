@@ -1,3 +1,4 @@
+//Esto sale de la pagina principal
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 export const authOptions = {
@@ -10,22 +11,26 @@ export const authOptions = {
     // ...add more providers here
   ],
 
-  pages: {
-    signIn: "/auth/signin",
+  theme:{
+    logo:'https://links.papareact.com/sq0',
+    brandColor: '#F13287',
+    colorScheme: 'auto',
+  },
+
+  pages:{
+    signIn: '/auth/signin',
   },
 
   secret: process.env.NEXTAUTH_SECRET,
 
-  callbacks: {
-    async session({ session, token, user }) {
-      session.user.username = session.user.name
-        .split(" ")
-        .join("")
-        .toLowerCase();
+  callbacks:{
+    async session({ session, token, user}){
 
-      session.user.userid = token.sub
+      session.user.username = session.user.name.split(' ').join('').toLowerCase();
 
+      session.user.uid = token.sub;
       return session;
+
     }
   }
 }
