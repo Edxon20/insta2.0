@@ -4,6 +4,16 @@
 This is a version only made for education porpuse 
 ### [LIVE HERE](https://insta2-0-eduardo20.vercel.app/) 
 
+### Technologies used:
+
+* NextJS
+* React
+* Custom NextAuth
+* Firebase v9
+* Recoil
+* FakerJS
+* TailwindCSS
+
 ## API Reference
 
 #### Get all items
