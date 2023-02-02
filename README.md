@@ -2,7 +2,7 @@
 # Instagram 2.0
 
 This is a version only made for education porpuse 
-
+### [LIVE HERE](https://insta2-0-eduardo20.vercel.app/) 
 
 ## API Reference
 
@@ -53,11 +53,7 @@ pnpm create next-app --example with-tailwindcss with-tailwindcss-app
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
 ## Deployment
 
-To deploy this project run in
 
-```bash
-  https://insta2-0-eduardo20.vercel.app/
-```
 
 
 ![image](https://raw.githubusercontent.com/Edxon20/insta2.0/main/deployInsta2.0.png)
