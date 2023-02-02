@@ -1,3 +1,29 @@
+
+# Instagram 2.0
+
+This is a version only made for education porpuse 
+
+
+## API Reference
+
+#### Get all items
+
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+|  | `API` | **Required**. npm install fake-api |
+
+
+
+
+
+## Authors
+
+- [@Edixon Toro](https://www.github.com/octokatherine)
+
+
+Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
 # Next.js + Tailwind CSS Example
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
@@ -25,4 +51,13 @@ pnpm create next-app --example with-tailwindcss with-tailwindcss-app
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-# insta2.0
+## Deployment
+
+To deploy this project run in
+
+```bash
+  https://insta2-0-eduardo20.vercel.app/
+```
+
+
+![image](https://raw.githubusercontent.com/Edxon20/insta2.0/main/deployInsta2.0.png)
